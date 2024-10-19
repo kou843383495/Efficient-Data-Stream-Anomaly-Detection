@@ -13,7 +13,8 @@ def z_score(x):
     mean = stat.mean(diff_list)
     std = stat.stdev(diff_list)
     print(abs(x - mean) , std, len(diff_list))
-    # when z-score greater than 3, the point should be a anomaly data. The diff_list will keep the recent 100 predict error.
+    # when z-score greater than 3, the point should be an anomaly data. The diff_list will keep the recent 100 predict error.
+    # when previous 50 point z-score greater than 3, we exchange diff list and consider it has a concept drift
     if abs(x - mean) > (3 * std):
         new_diff_list.append(x)
         if len(new_diff_list) > 50:
