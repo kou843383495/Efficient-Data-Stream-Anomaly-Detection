@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+
+<body>
+  <div>
+    <a>The true distribution function : </a>
+    <br>
+    <a>y = year * w1 + season * w2 + month * w3 + weekday * w4 + day * w5 + t * w6 +
+      random_noise</a>
+    <br>
+    <a>where the expression include year,season,month,day of week,day of month, one independent variable t and a
+      random noise</a>
+    <br>
+    <a>The weight of data from 2019/01/01 to 2020/12/31</a>
+    <br>
+    <a>
+      <label>w1</label>
+      <input type="number" id="h_weight0">
+      <label>w2</label>
+      <input type="number" id="h_weight1">
+      <label>w3</label>
+      <input type="number" id="h_weight2">
+      <label>w4</label>
+      <input type="number" id="h_weight3">
+      <label>w5</label>
+      <input type="number" id="h_weight4">
+      <label>w6</label>
+      <input type="number" id="h_weight5">
+      <label>w7</label>
+      <input type="number" id="h_weight6">
+      <button type="button" onclick="updateHistoryData()">update data</button>
+    </a>
+  </div>
+  <div>
+    <canvas id="myChart"></canvas>
+  </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+
+  let his_chart = null
+  let new_chart = null
+  let color = null
+
+  function updateChart(chart, newData) {
+    console.log(chart)
+    chart.data.datasets[0].data = newData;
+    chart.update();
+  }
+
+  function setHistoryData(default_weight) {
+    for (let i = 0; i < 7; i++) {
+      input_id = "#h_weight" + i;
+      $(input_id).val(default_weight[i])
+    }
+  }
+
+  async function updateHistoryData() {
+    let weight = []
+    for (let i = 0; i < 7; i++) {
+      input_id = "#h_weight" + i;
+      weight[i] = $(input_id).val()
+    }
+    $.post("./history_data",
+      {
+        'data': weight,
+        'csrfmiddlewaretoken': "{{ csrf_token }}"
+      },
+      function (data, status) {
+        console.log(data.history_data)
+        color = data.color
+        updateChart(his_chart, data.history_data)
+      });
+  }
+
+  $(document).ready(async function () {
+
+    const ctx = document.getElementById('myChart');
+
+    history_data = []
+    x_data = []
+
+    default_weight = [0, 0, 0, 0, 0, 0, 0]
+
+    await $.ajax({
+      url: "./history_data",
+      type: 'GET',
+      success: function (res) {
+        console.log(res);
+        history_data = res.history_data
+        x_data = res.history_x
+        default_weight = res.default_weight
+        color = res.color
+      }
+    });
+
+    setHistoryData(default_weight)
+
+
+    const delayBetweenPoints = 100;
+    const previousY = (ctx) => ctx.index === 0 ? ctx.chart.scales.y.getPixelForValue(100) : ctx.chart.getDatasetMeta(ctx.datasetIndex).data[ctx.index - 1].getProps(['y'], true).y;
+    const animation = {
+      x: {
+        type: 'number',
+        easing: 'linear',
+        duration: delayBetweenPoints,
+        from: NaN, // the point is initially skipped
+        delay(ctx) {
+          if (ctx.type !== 'data' || ctx.xStarted) {
+            return 0;
+          }
+          ctx.xStarted = true;
+          return ctx.index * delayBetweenPoints;
+        }
+      },
+      y: {
+        type: 'number',
+        easing: 'linear',
+        duration: delayBetweenPoints,
+        from: previousY,
+        delay(ctx) {
+          if (ctx.type !== 'data' || ctx.yStarted) {
+            return 0;
+          }
+          ctx.yStarted = true;
+          return ctx.index * delayBetweenPoints;
+        }
+      }
+    }
+
+
+    his_chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: x_data,
+        datasets: [{
+          label: 'data anomaly detection',
+          data: history_data,
+          borderWidth: 1,
+          pointBackgroundColor: function (context) {
+            var index = context.dataIndex;
+            if (color)
+              return color[index]
+            else
+              return "red"
+          }
+        }]
+      },
+      options: {
+        scales: {
+          x: {
+            display: false
+          }
+        },
+        animation
+      }
+    });
+
+  })
+</script>
+
+</html>
