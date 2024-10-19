@@ -1,6 +1,7 @@
 import datetime
 
-from .tools import split_date, original_express, z_score
+from .tools import split_date, original_express
+from .detect_algorithm import z_score
 import random
 
 
@@ -21,7 +22,7 @@ def get_history_data(weight=None):
         year, season, month, weekday, day = split_date(start_date)
         y_est = original_express(year, season, month, weekday, day, count, weight)
         count += 1
-        if random.random() < 0.05:
+        if random.random() < 0.02:
             y_tar = random.random() * 500
         else:
             y_tar = original_express(year, season, month, weekday, day, count,

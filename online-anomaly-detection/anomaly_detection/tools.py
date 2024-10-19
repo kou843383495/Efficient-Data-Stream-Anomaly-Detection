@@ -25,17 +25,3 @@ def original_express(year, season, month, weekday, day, count, weight=None):
     print(weight)
     return year * weight[0] + season * weight[1] + month * weight[2] + weekday * weight[3] + day * weight[4] + count * \
         weight[5]
-
-def z_score(diff_list,x):
-    if len(diff_list) < 10:
-        diff_list.append(x)
-        return 'blue'
-    mean = stat.mean(diff_list)
-    std = stat.stdev(diff_list)
-    if abs(x - mean) > 3 * std:
-        return 'red'
-    else:
-        diff_list.append(x)
-        if len(diff_list) > 100:
-            diff_list.pop(0)
-        return 'blue'
