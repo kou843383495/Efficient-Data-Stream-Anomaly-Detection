@@ -11,7 +11,7 @@ The core code of this project includes the following aspects
 - visual page
 ---
 
-In [online-anomaly-detection/anomaly_detection/generate_data.py](online-anomaly-detection/anomaly_detection/generate_data.py), use the equation:
+In [generate_data.py](online-anomaly-detection/anomaly_detection/generate_data.py), use the equation:
 
 y = year * w1 + season * w2 + month * w3 + weekday * w4 + day * w5 + t * w6
 
@@ -25,4 +25,10 @@ In this project, the mean μ and standard deviation σ of the prediction errors 
 
 ---
 
-This project uses Django to implement a webpage to showcase the above work. The webpage allows users to select different weights to generate different distributions and view the results of abnormal predictions.Please install the dependencies in the requirements file first and run the following command in the a file.
+This project uses Django to implement a webpage to showcase the above work. The webpage allows users to select different weights to generate different distributions and view the results of abnormal predictions.Please install the dependencies in the requirements.text first and run the commond 
+```
+python python manage.py runserver
+
+```
+in online-anomaly-detection dictionary.The open the [page](http://127.0.0.1:8000/anomaly_detection/)
+
