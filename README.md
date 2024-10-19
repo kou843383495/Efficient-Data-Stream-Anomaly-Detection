@@ -15,7 +15,7 @@ In online-anomaly-detection/anomaly_detection/generate_data.py, use the equation
 
 y = year * w1 + season * w2 + month * w3 + weekday * w4 + day * w5 + t * w6
 
-to construct a function related to the year, season, month, week, etc. of a time point. Assume that the function is the distribution function of a time series D, and there is a certain probability (p = 0.05) that an outlier will appear.In this project, data from 2019 to 2020 were simulated and random noise was added.
+to construct a function related to the year, season, month, week, etc. of a time point. Assume that the function is the distribution function of a time series D, and there is a certain probability (p = 0.02) that an outlier will appear.In this project, data from 2019 to 2020 were simulated and random noise was added.
 
 ---
 
