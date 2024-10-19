@@ -35,7 +35,7 @@ def get_history_data(weight=None):
         result_list.append(y_tar)
         x_list.append(start_date.strftime('%Y/%m/%d'))
 
-        color.append(z_score(normal_list, y_est - y_tar))
+        color.append(z_score(normal_list, abs(y_est - y_tar)))
         start_date += delta
     # return the y,x,and color of each point
     return result_list, x_list, color
