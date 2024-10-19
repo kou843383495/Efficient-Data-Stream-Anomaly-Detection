@@ -9,7 +9,6 @@ def get_history_data(weight=None):
     result_list = []
     x_list = []
     color = []
-    normal_list = []
     # the simulation period is from 2020/1/1 to 2020/12/31
     start_date = datetime.date(2020, 1, 1)
     end_date = datetime.date(2020, 12, 31)
@@ -18,7 +17,6 @@ def get_history_data(weight=None):
     if weight is not None:
         for index in range(7):
             weight[index] = float(weight[index])
-    print(weight)
     count = 0
     # each data point present a day
     while start_date <= end_date:
@@ -35,7 +33,7 @@ def get_history_data(weight=None):
         result_list.append(y_tar)
         x_list.append(start_date.strftime('%Y/%m/%d'))
 
-        color.append(z_score(normal_list, abs(y_est - y_tar)))
+        color.append(z_score(y_est - y_tar))
         start_date += delta
     # return the y,x,and color of each point
     return result_list, x_list, color

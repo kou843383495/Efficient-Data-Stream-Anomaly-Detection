@@ -18,6 +18,5 @@ def split_date(current_date: date):
 def original_express(year, season, month, weekday, day, count, weight=None):
     if weight is None:
         weight = default_weight
-    print(weight)
     return year * weight[0] + season * weight[1] + month * weight[2] + weekday * weight[3] + day * weight[4] + count * \
         weight[5]
