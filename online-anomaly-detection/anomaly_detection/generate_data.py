@@ -27,7 +27,7 @@ def get_history_data(weight=None):
         y_est = original_express(year, season, month, weekday, day, count, weight)
         count += 1
         # the real value which may be anomaly data or predict value add a random noise
-        if random.random() < 0.02:
+        if random.random() < 0.02 and count >= 30:
             y_tar = random.random() * 500
         else:
             y_tar = original_express(year, season, month, weekday, day, count,
