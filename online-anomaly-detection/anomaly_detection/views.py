@@ -7,11 +7,11 @@ from .tools import default_weight
 
 # Create your views here.
 
-
+# this the controller will return the page.
 def index(request):
     return render(request, 'anomaly_detection/index.html')
 
-
+# the api will accept the weight from the web page and return the new data
 def history_data(request):
     print(request.POST.getlist('data[]'))
     weight = request.POST.getlist('data[]')

@@ -1,15 +1,11 @@
 import random
 from datetime import date
-import statistics as stat
 
-i_val_1 = random.random()
-i_val_2 = random.random()
-
+# setting the default weight of express
 default_weight = [1.0 for x in range(7)]
-
 default_weight[0] = 0
 
-
+# get the day, weekday, month, season, year of a date object
 def split_date(current_date: date):
     day = current_date.day
     weekday = current_date.weekday() + 1
@@ -18,7 +14,7 @@ def split_date(current_date: date):
     year = current_date.year
     return year, season, month, weekday, day
 
-
+# fellow the express y = year * w1 + season * w2 + month * w3 + weekday * w4 + day * w5 + t * w6 calculate the data
 def original_express(year, season, month, weekday, day, count, weight=None):
     if weight is None:
         weight = default_weight
